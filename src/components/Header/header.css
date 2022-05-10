@@ -1,5 +1,4 @@
 .header {
-  border: 1px red solid;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,27 +7,56 @@
 }
 
 .header__navbar {
-  border: 1px green solid;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding: 1rem 0; */
 }
 
 .header__navbar-container {
-  border: 1px yellow solid;
   flex: 1;
   display: none;
   flex-direction: row;
-  gap: 1.5rem;
+  align-items: flex-end;
+  gap: 1rem;
+}
+.header__navbar-menu {
+  position: relative;
+}
+.header__navbar-menu_icons {
+  cursor: pointer;
 }
 
+.header__navbar-menu_container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+
+  background-color: rgb(246, 246, 241);
+  text-align: start;
+  padding: 1rem;
+  position: absolute;
+  top: 40px;
+  margin-top: 0.3rem;
+  min-width: 150px;
+  border-radius: 5px;
+  box-shadow: 0, 0, 5 rgba(0, 0, 0, 0.2);
+}
+
+.header__navbar-menu_container p {
+  padding: 0.75rem;
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 25px;
+}
 .header__icons {
+  padding: 0.3rem;
   flex: 1;
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .header__icons-container {
@@ -47,7 +75,63 @@
 }
 
 .header__icons-size {
-  font-size: 1.5rem;
+  font-size: 2rem;
+}
+
+.header__logo span,
+.header__small-logo span {
+  display: flex;
+  cursor: pointer;
+}
+
+.header__logo p:first-child,
+.header__small-logo p:first-child {
+  transform: rotate(-35deg);
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 100px;
+  color: rgb(255, 55, 0);
+  /* border: 1px red solid; */
+}
+
+.header__logo p:last-child,
+.header__small-logo p:last-child {
+  display: flex;
+  font-size: 10px;
+  padding-top: 95px;
+  color: orangered;
+}
+
+.header__small-logo p:first-child {
+  font-size: 30px;
+}
+
+.header__small-logo p:last-child {
+  font-size: 5px;
+  padding-top: 30px;
+}
+
+.header__categories {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.header__categories p {
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 20px;
+  padding: 1rem;
+}
+
+.header__categories p:hover {
+  text-decoration: underline;
+}
+
+.header__categories p:active {
+  color: orangered;
 }
 
 @media screen and (max-width: 1050px) {
@@ -59,7 +143,10 @@
     display: flex;
   }
 
-  .header__logo {
+  .header__logo,
+  .header__categories {
     display: none;
+  }
+  .header__navbar-menu {
   }
 }
