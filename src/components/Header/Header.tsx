@@ -5,12 +5,17 @@ import { RiMenu2Line, RiCloseLine } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { fetchCategories } from "../../store/categories-action";
+import Categories from "../../containers/Categories";
+import { categoriesActions } from "../../store/categories-slices";
 
 const Header: React.FC = () => {
   const categoriesList = useAppSelector((state) => state.categories.categories);
   const dispatch = useAppDispatch();
-
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+
+  const selectCategoryHandler = () => {
+    dispatch(categoriesActions.pickedCategory(""));
+  };
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -38,16 +43,12 @@ const Header: React.FC = () => {
             )}
             {toggleMenu && (
               <div className='header__navbar-menu_container scale-up-ver-top'>
-                {categoriesList.map((category) => {
-                  return (
-                    <p key={category.category_name}>{category.category_name}</p>
-                  );
-                })}
+                <Categories categoriesList={categoriesList} />
               </div>
             )}
           </div>
           <div className='header__small-logo'>
-            <span>
+            <span onClick={() => selectCategoryHandler()}>
               <p>E</p>
               <p>.com</p>
             </span>
@@ -69,15 +70,13 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div className='header__logo'>
-        <span>
+        <span onClick={() => selectCategoryHandler()}>
           <p>E</p>
           <p>.com</p>
         </span>
       </div>
       <div className='header__categories'>
-        {categoriesList.map((category) => {
-          return <p key={category.category_name}>{category.category_name}</p>;
-        })}
+        <Categories categoriesList={categoriesList} />
       </div>
     </div>
   );
