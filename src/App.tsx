@@ -3,9 +3,12 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
-import Items from "./components/Items/Items";
 import Home from "./components/Home/Home";
 import Menu from "./components/Menu/Menu";
+import Profile from "./components/Profile/Profile";
+import Basket from "./components/Basket/Basket";
+import Orders from "./components/Orders/Orders";
+import SingleItem from "./components/SingleItem/SingleItem";
 
 function App() {
   return (
@@ -13,8 +16,10 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Home />}></Route>
-        <Route path='/items' element={<Items />}></Route>
-        <Route path='/categories' element={<Menu />}></Route>
+        <Route path='/items/:item_id' element={<SingleItem />}></Route>
+        <Route path='/users/:username' element={<Profile />}></Route>
+        <Route path='/users/:username/basket' element={<Basket />}></Route>
+        <Route path='/users/:username/orders' element={<Orders />}></Route>
       </Routes>
 
       <Footer />
