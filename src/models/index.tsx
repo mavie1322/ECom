@@ -23,4 +23,5 @@ export type Category = {
 
 export interface CategoriesState {
   categories: Category[];
+  selected_category: string;
 }
