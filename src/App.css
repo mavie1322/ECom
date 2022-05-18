@@ -21,6 +21,7 @@
 
 .link {
   text-decoration: none;
+  color: black;
 }
 
 @-webkit-keyframes scale-up-ver-top {
