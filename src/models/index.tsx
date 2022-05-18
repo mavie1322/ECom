@@ -1,3 +1,5 @@
+import { Article } from "@mui/icons-material";
+
 export interface Article {
   item_id: number;
   item_name: string;
@@ -24,4 +26,15 @@ export type Category = {
 export interface CategoriesState {
   categories: Category[];
   selected_category: string;
+}
+
+export type BasketItem = {
+  item_basket: Article;
+  quantity_ordered: number;
+  // total_price: number;
+};
+
+export interface BasketState {
+  items: BasketItem[];
+  total_quantity: number;
 }
