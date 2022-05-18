@@ -1,16 +1,27 @@
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { Article } from "../../models";
+import { basketActions } from "../../store/basket-slices";
 
 import "./singleItem.css";
 
 const SingleItem = () => {
   const { item_id } = useParams<string>();
   const itemsList = useAppSelector((state) => state.items.itemsList);
-
+  const basket = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
   let item: Article | undefined = itemsList.find(
     (product) => product.item_id === parseInt(item_id!) //even tough it can be null, we assured the compiler it is not
   );
+
+  console.log(basket);
+  const addToBasketHandler = (item: Article) => {
+    const itemToAdd = {
+      item_basket: item,
+      quantity_ordered: 1,
+    };
+    dispatch(basketActions.addItemToBasket(itemToAdd));
+  };
 
   return (
     <div className='singleItem__container section__margin'>
@@ -24,7 +35,7 @@ const SingleItem = () => {
         <span>{item?.description}</span>
         <hr />
         <span>
-          <button>Add</button>
+          <button onClick={() => addToBasketHandler(item!)}>Add</button>
         </span>
       </div>
     </div>
