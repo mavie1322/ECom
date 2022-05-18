@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import Items from "../../containers/Items";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { Article } from "../../models";
@@ -11,7 +10,6 @@ const Home = () => {
   const pickedCat = useAppSelector(
     (state) => state.categories.selected_category
   );
-  console.log(typeof pickedCat);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
