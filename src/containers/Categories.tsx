@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useAppDispatch } from "../hooks/hooks";
 import { Category } from "../models";
 import { categoriesActions } from "../store/categories-slices";
@@ -17,11 +18,13 @@ const Categories: React.FC<Props> = ({ categoriesList }) => {
       {categoriesList.map((category) => {
         const { category_name }: { category_name: string } = category;
         return (
-          <p
+          <Link
+            to={"/"}
+            className='link'
             key={category_name}
             onClick={() => selectCategoryHandler(category_name)}>
-            {category.category_name}
-          </p>
+            <p>{category.category_name}</p>
+          </Link>
         );
       })}
     </>
