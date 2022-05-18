@@ -32,6 +32,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
+  border: 1px solid red;
 
   background-color: rgb(246, 246, 241);
   text-align: start;
@@ -122,7 +123,7 @@
   cursor: pointer;
   font-family: var(--font-family);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 25px;
   padding: 1rem;
 }
 
@@ -134,6 +135,11 @@
   color: orangered;
 }
 
+.header__navbar-hover {
+  top: 75px;
+  right: 40px;
+  min-width: 400px;
+}
 @media screen and (max-width: 1050px) {
   .header__icons-container p {
     display: none;
