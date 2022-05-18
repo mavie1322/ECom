@@ -7,11 +7,16 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { fetchCategories } from "../../store/categories-action";
 import Categories from "../../containers/Categories";
 import { categoriesActions } from "../../store/categories-slices";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const categoriesList = useAppSelector((state) => state.categories.categories);
+  const basketTotalQuantity = useAppSelector(
+    (state) => state.basket.total_quantity
+  );
   const dispatch = useAppDispatch();
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
 
   const selectCategoryHandler = () => {
     dispatch(categoriesActions.pickedCategory(""));
@@ -48,10 +53,12 @@ const Header: React.FC = () => {
             )}
           </div>
           <div className='header__small-logo'>
-            <span onClick={() => selectCategoryHandler()}>
-              <p>E</p>
-              <p>.com</p>
-            </span>
+            <Link to={"/"} className='link'>
+              <span onClick={() => selectCategoryHandler()}>
+                <p>E</p>
+                <p>.com</p>
+              </span>
+            </Link>
           </div>
         </div>
         <div className='header__icons'>
@@ -63,17 +70,32 @@ const Header: React.FC = () => {
             <IoSearchOutline className='header__icons-size' />
             <p>Search</p>
           </div>
-          <div className='header__icons-container'>
-            <BsBasket3 className='header__icons-size' />
-            <p>Basket({0})</p>
+          <div>
+            <Link
+              to={`/users/${"Paul-R"}/basket`}
+              className='link header__icons-container header__navbar-menu'>
+              <BsBasket3 className='header__icons-size' />
+              <p
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}>
+                Basket({basketTotalQuantity})
+              </p>
+            </Link>
+            {isHovering && (
+              <div className='header__navbar-menu_container header__navbar-hover'>
+                Hello
+              </div>
+            )}
           </div>
         </div>
       </div>
       <div className='header__logo'>
-        <span onClick={() => selectCategoryHandler()}>
-          <p>E</p>
-          <p>.com</p>
-        </span>
+        <Link to={"/"} className='link'>
+          <span onClick={() => selectCategoryHandler()}>
+            <p>E</p>
+            <p>.com</p>
+          </span>
+        </Link>
       </div>
       <div className='header__categories'>
         <Categories categoriesList={categoriesList} />
