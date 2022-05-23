@@ -32,7 +32,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  border: 1px solid red;
 
   background-color: rgb(246, 246, 241);
   text-align: start;
@@ -135,11 +134,18 @@
   color: orangered;
 }
 
-.header__navbar-hover {
-  top: 75px;
+.header__basket-hover {
+  top: 65px;
   right: 40px;
-  min-width: 400px;
+  min-width: 420px;
 }
+
+.header__sign-hover {
+  top: 65px;
+  right: 19rem;
+  min-width: 300px;
+}
+
 @media screen and (max-width: 1050px) {
   .header__icons-container p {
     display: none;
@@ -153,6 +159,10 @@
   .header__categories {
     display: none;
   }
-  .header__navbar-menu {
+}
+
+@media screen and (max-width: 650px) {
+  .header__basket-hover {
+    display: none;
   }
 }
