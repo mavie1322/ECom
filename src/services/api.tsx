@@ -13,3 +13,8 @@ export const getCategories = async () => {
   const res = await marketApi.get("/categories");
   return res.data;
 };
+
+export const getItemById = async (id: string) => {
+  const res = await marketApi.get(`/items/${id}`);
+  return res.data;
+};
