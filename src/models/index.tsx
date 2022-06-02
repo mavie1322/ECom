@@ -9,6 +9,14 @@ export interface Article {
   img_url: string;
 }
 
+export interface UsernameProfile {
+  username: string;
+  avatar_url: string;
+  kudos: number;
+  items_in_basket: number;
+  items_ordered: number;
+}
+
 export interface ArticleState {
   itemsList: Article[];
   totalItems: number;
