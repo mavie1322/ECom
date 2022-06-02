@@ -18,3 +18,13 @@ export const getItemById = async (id: string) => {
   const res = await marketApi.get(`/items/${id}`);
   return res.data;
 };
+
+export const getUserByUsername = async (username: string) => {
+  const res = await marketApi.get(`/users/${username}`);
+  return res.data.user;
+};
+
+export const postUser = async (body: { username: string }) => {
+  const res = await marketApi.post("/users", body);
+  return res.data;
+};
