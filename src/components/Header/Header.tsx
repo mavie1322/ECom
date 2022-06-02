@@ -1,14 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./header.css";
 import { BsPerson, BsBasket3 } from "react-icons/bs";
 import { RiMenu2Line, RiCloseLine } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { fetchCategories } from "../../store/categories-action";
+import { fetchCategories } from "../../store/categories-actions";
 import Categories from "../../containers/Categories";
 import { categoriesActions } from "../../store/categories-slices";
 import { Link } from "react-router-dom";
 import BasketSubmenu from "../Basket/Submenu/BasketSubmenu";
+import SignIn from "../SignIn/SignIn";
 
 const Header: React.FC = () => {
   const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -19,11 +26,17 @@ const Header: React.FC = () => {
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
   const [isHoveringBasket, setIsHoveringBasket] = useState<boolean>(false);
   const [isHoveringSignIn, setIsHoveringSignIn] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const signInRef = useRef(null);
 
   const selectCategoryHandler = () => {
     dispatch(categoriesActions.pickedCategory(""));
+  };
+
+  const togglePopup = () => {
+    setOpenPopup(!openPopup);
   };
 
   useEffect(() => {
@@ -66,16 +79,18 @@ const Header: React.FC = () => {
             </Link>
           </div>
         </div>
-        {/* header icons sign in search and basket */}
+        {/* header icons sign in, search and basket */}
         <div className='header__icons'>
           <div
             className='header__icons-container link header__navbar-menu'
             onMouseOver={() => setIsHoveringSignIn(true)}
-            onMouseOut={() => setIsHoveringSignIn(false)}>
+            onMouseOut={() => setIsHoveringSignIn(false)}
+            onClick={() => togglePopup()}>
             <BsPerson className='header__icons-size' />
             {/* if user logged in his name should appear or sign in */}
             <p>Sign In</p>
           </div>
+          {/* when the user logged in and hover over this icon, the customer information submenu will appear */}
           {isHoveringSignIn && isLoggedIn && (
             <div
               className='header__navbar-menu_container header__sign-hover scale-up-ver-top'
@@ -84,7 +99,11 @@ const Header: React.FC = () => {
               Hello
             </div>
           )}
-          <div className='header__icons-container'>
+          {/* pop up window will appear when the user want to sign in */}
+          {openPopup && <SignIn togglePopup={togglePopup} />}
+          <div
+            className='header__icons-container'
+            onClick={() => setIsSearching(true)}>
             <IoSearchOutline className='header__icons-size' />
             <p>Search</p>
           </div>
