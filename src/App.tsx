@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/items/:item_id' element={<SingleItem />}></Route>
-        <Route path='/sign' element={<SignIn />}></Route>
+        {/* <Route path='/sign' element={<SignIn />}></Route> */}
         <Route path='/users/:username' element={<Profile />}></Route>
         <Route path='/users/:username/basket' element={<Basket />}></Route>
         <Route path='/users/:username/orders' element={<Orders />}></Route>
