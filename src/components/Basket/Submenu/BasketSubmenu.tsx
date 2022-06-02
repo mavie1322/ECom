@@ -55,14 +55,22 @@ const BasketSubMenu: React.FC = () => {
               <p>Order value</p>
               <p>£{orderValue.toFixed(2)}</p>
             </span>
-            <span>
-              <p>Delivery</p>
-              <p>£{delivery}</p>
-            </span>
+            {/* if there is items in the basket delivery cost will be add to the total cost */}
+            {itemsInBasket.items.length !== 0 && (
+              <span>
+                <p>Delivery</p>
+                <p>£{delivery}</p>
+              </span>
+            )}
           </div>
+          {/* show the total cost */}
           <span className='basketMenu__total-value'>
             <p>Total</p>
-            <p>£{(delivery + orderValue).toFixed(2)}</p>
+            {itemsInBasket.items.length === 0 ? (
+              <p>£{orderValue.toFixed(2)}</p>
+            ) : (
+              <p>£{(delivery + orderValue).toFixed(2)}</p>
+            )}
           </span>
         </div>
       </div>
