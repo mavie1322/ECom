@@ -24,6 +24,7 @@ const SingleItem = () => {
     const itemFromApi: { item: Article } = await getItemById(id);
     setSingleItemInformation(itemFromApi.item);
   };
+
   const addToBasketHandler = (item: Article) => {
     const itemToAdd = {
       item_basket: item,

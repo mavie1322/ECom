@@ -10,9 +10,11 @@ type Props = {
 
 const Categories: React.FC<Props> = ({ categoriesList }) => {
   const dispatch = useAppDispatch();
+
   const selectCategoryHandler = (category_name: string) => {
     dispatch(categoriesActions.pickedCategory(category_name));
   };
+
   return (
     <>
       {categoriesList.map((category) => {
