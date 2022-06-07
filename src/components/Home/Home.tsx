@@ -7,6 +7,7 @@ import "./home.css";
 
 const Home = () => {
   const itemsList = useAppSelector((state) => state.items.itemsList);
+  const searchingItem = useAppSelector((state) => state.items.searchItem);
   const pickedCat = useAppSelector(
     (state) => state.categories.selected_category
   );
@@ -21,6 +22,18 @@ const Home = () => {
       (item) => item.category_name === pickedCat
     );
     return <Items itemsList={pickedCategory} />;
+  }
+
+  if (searchingItem) {
+    let searchingResult: Article[] = itemsList.filter((item) => {
+      return item.item_name.toLowerCase().includes(searchingItem.toLowerCase());
+    });
+    return (
+      <>
+        <p>SHOWING RESULTS FOR "{searchingItem}"</p>
+        <Items itemsList={searchingResult} />
+      </>
+    );
   }
 
   return <Items itemsList={itemsList} />;
