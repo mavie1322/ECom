@@ -20,6 +20,7 @@ export interface UsernameProfile {
 export interface ArticleState {
   itemsList: Article[];
   totalItems: number;
+  searchItem: string;
 }
 
 export interface ArticleFromApi {
