@@ -1,21 +1,20 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+
 import "./header.css";
 import { BsPerson, BsBasket3 } from "react-icons/bs";
 import { RiMenu2Line, RiCloseLine } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { TextField } from "@mui/material";
+
 import { fetchCategories } from "../../store/categories-actions";
 import Categories from "../../containers/Categories";
 import { categoriesActions } from "../../store/categories-slices";
-import { Link } from "react-router-dom";
 import BasketSubmenu from "../Basket/Submenu/BasketSubmenu";
 import SignIn from "../SignIn/SignIn";
+import SignInSubmenu from "../SignIn/Submenu/SignInSubmenu";
+import { itemsActions } from "../../store/items-slice";
 
 const Header: React.FC = () => {
   const categoriesList = useAppSelector((state) => state.categories.categories);
@@ -26,17 +25,32 @@ const Header: React.FC = () => {
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
   const [isHoveringBasket, setIsHoveringBasket] = useState<boolean>(false);
   const [isHoveringSignIn, setIsHoveringSignIn] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [inputText, setInputText] = useState<string>("");
+  let isLoggedIn = useAppSelector((state) => state.user.username);
   const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const signInRef = useRef(null);
 
   const selectCategoryHandler = () => {
     dispatch(categoriesActions.pickedCategory(""));
+    dispatch(itemsActions.setSearchItems(""));
   };
 
   const togglePopup = () => {
     setOpenPopup(!openPopup);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      setIsSearching(false);
+      dispatch(itemsActions.setSearchItems(inputText));
+    }
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    let input = event.target.value;
+    setInputText(input);
   };
 
   useEffect(() => {
@@ -80,6 +94,7 @@ const Header: React.FC = () => {
           </div>
         </div>
         {/* header icons sign in, search and basket */}
+        {/* Sign in */}
         <div className='header__icons'>
           <div
             className='header__icons-container link header__navbar-menu'
@@ -88,7 +103,7 @@ const Header: React.FC = () => {
             onClick={() => togglePopup()}>
             <BsPerson className='header__icons-size' />
             {/* if user logged in his name should appear or sign in */}
-            <p>Sign In</p>
+            {isLoggedIn ? <p>{isLoggedIn}</p> : <p>Sign In</p>}
           </div>
           {/* when the user logged in and hover over this icon, the customer information submenu will appear */}
           {isHoveringSignIn && isLoggedIn && (
@@ -96,17 +111,30 @@ const Header: React.FC = () => {
               className='header__navbar-menu_container header__sign-hover scale-up-ver-top'
               onMouseOver={() => setIsHoveringSignIn(true)}
               onMouseOut={() => setIsHoveringSignIn(false)}>
-              Hello
+              <SignInSubmenu />
             </div>
           )}
           {/* pop up window will appear when the user want to sign in */}
-          {openPopup && <SignIn togglePopup={togglePopup} />}
+          {openPopup && !isLoggedIn && <SignIn togglePopup={togglePopup} />}
+          {/* Search */}
           <div
             className='header__icons-container'
-            onClick={() => setIsSearching(true)}>
+            onClick={() => setIsSearching(!isSearching)}>
             <IoSearchOutline className='header__icons-size' />
             <p>Search</p>
           </div>
+          {isSearching && (
+            <div className='header__navbar-menu_container header__search-hover scale-up-ver-top'>
+              <TextField
+                fullWidth
+                color='secondary'
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => handleInputChange(e)}
+                className='header__search-container'
+                label='Search Products'></TextField>
+            </div>
+          )}
+          {/* Basket */}
           <div>
             <Link
               to={`/users/${"Paul-R"}/basket`}
@@ -128,6 +156,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Logo */}
       <div className='header__logo'>
         <Link to={"/"} className='link'>
           <span onClick={() => selectCategoryHandler()}>
@@ -136,6 +165,7 @@ const Header: React.FC = () => {
           </span>
         </Link>
       </div>
+      {/* Categories list */}
       <div className='header__categories'>
         <Categories categoriesList={categoriesList} />
       </div>
