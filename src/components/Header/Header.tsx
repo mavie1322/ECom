@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
 import "./header.css";
@@ -21,14 +21,15 @@ const Header: React.FC = () => {
   const basketTotalQuantity = useAppSelector(
     (state) => state.basket.total_quantity
   );
+  let isLoggedIn = useAppSelector((state) => state.user.username);
   const dispatch = useAppDispatch();
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
   const [isHoveringBasket, setIsHoveringBasket] = useState<boolean>(false);
   const [isHoveringSignIn, setIsHoveringSignIn] = useState<boolean>(false);
   const [inputText, setInputText] = useState<string>("");
-  let isLoggedIn = useAppSelector((state) => state.user.username);
   const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const selectCategoryHandler = () => {
     dispatch(categoriesActions.pickedCategory(""));
@@ -42,7 +43,9 @@ const Header: React.FC = () => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
       setIsSearching(false);
+      dispatch(categoriesActions.pickedCategory(""));
       dispatch(itemsActions.setSearchItems(inputText));
+      navigate("/");
     }
   };
 
@@ -136,21 +139,37 @@ const Header: React.FC = () => {
           )}
           {/* Basket */}
           <div>
-            <Link
-              to={`/users/${"Paul-R"}/basket`}
-              className='link header__icons-container header__navbar-menu'
-              onMouseOver={() => setIsHoveringBasket(true)}
-              onMouseOut={() => setIsHoveringBasket(false)}>
-              <BsBasket3 className='header__icons-size' />
-              <p>Basket({basketTotalQuantity})</p>
-            </Link>
+            {/* can't access basket without signing in */}
+            {isLoggedIn ? (
+              <>
+                <Link
+                  to={`/users/${isLoggedIn}/basket`}
+                  className='link header__icons-container header__navbar-menu'
+                  onMouseOver={() => setIsHoveringBasket(true)}
+                  onMouseOut={() => setIsHoveringBasket(false)}>
+                  <BsBasket3 className='header__icons-size' />
+                  <p>Basket({basketTotalQuantity})</p>
+                </Link>
+              </>
+            ) : (
+              <>
+                <div
+                  className='link header__icons-container header__navbar-menu'
+                  onMouseOver={() => setIsHoveringBasket(true)}
+                  onMouseOut={() => setIsHoveringBasket(false)}
+                  onClick={() => togglePopup()}>
+                  <BsBasket3 className='header__icons-size' />
+                  <p>Basket({basketTotalQuantity})</p>
+                </div>
+              </>
+            )}
             {/* show the submenu basket when user hover on the basket icon when the screen width is over 1050px */}
             {isHoveringBasket && (
               <div
                 className='header__navbar-menu_container header__basket-hover scale-up-ver-top'
                 onMouseOver={() => setIsHoveringBasket(true)}
                 onMouseOut={() => setIsHoveringBasket(false)}>
-                <BasketSubmenu />
+                <BasketSubmenu togglePopup={togglePopup} />
               </div>
             )}
           </div>
