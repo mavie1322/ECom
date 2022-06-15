@@ -26,11 +26,14 @@ const Home = () => {
 
   if (searchingItem) {
     let searchingResult: Article[] = itemsList.filter((item) => {
-      return item.item_name.toLowerCase().includes(searchingItem.toLowerCase());
+      return (
+        item.item_name.toLowerCase().includes(searchingItem.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchingItem.toLowerCase())
+      );
     });
     return (
       <>
-        <p>SHOWING RESULTS FOR "{searchingItem}"</p>
+        <p className='home__header'>SHOWING RESULTS FOR "{searchingItem}"</p>
         <Items itemsList={searchingResult} />
       </>
     );
