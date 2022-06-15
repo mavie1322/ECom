@@ -25,8 +25,28 @@ export const basketSlice = createSlice({
 
       state.total_quantity++;
     },
-    removeItemFromBasket() {},
-    reduceItemQuantity() {},
+    removeItemFromBasket(state, action: PayloadAction<number>) {
+      state.items = state.items.filter(
+        (item) => item.item_basket.item_id !== action.payload
+      );
+      state.total_quantity = state.items.reduce((total, item) => {
+        total += item.quantity_ordered;
+        return total;
+      }, 0);
+    },
+    changeItemQuantity(state, action: PayloadAction<[number, number]>) {
+      const [newQuantity, item_id] = action.payload;
+
+      state.items = state.items.map((item) => {
+        if (item.item_basket.item_id === item_id)
+          item.quantity_ordered = newQuantity;
+        return item;
+      });
+      state.total_quantity = state.items.reduce((total, item) => {
+        total += item.quantity_ordered;
+        return total;
+      }, 0);
+    },
   },
 });
 
