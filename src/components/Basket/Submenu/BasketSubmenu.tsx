@@ -2,8 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/hooks";
 import "./basketSubmenu.css";
 
-const BasketSubMenu: React.FC = () => {
+type Props = {
+  togglePopup: () => void;
+};
+
+const BasketSubMenu: React.FC<Props> = ({ togglePopup }) => {
   const itemsInBasket = useAppSelector((state) => state.basket);
+  const userLoggedIn = useAppSelector((state) => state.user.username);
   const delivery: number = 3.99;
   const navigate = useNavigate();
   let orderValue: number = itemsInBasket.items.reduce((total, item) => {
@@ -12,7 +17,8 @@ const BasketSubMenu: React.FC = () => {
   }, 0);
 
   const redirectToBasketHandler = () => {
-    navigate(`/users/${"Paul-R"}/basket`);
+    if (userLoggedIn) navigate(`/users/${userLoggedIn}/basket`);
+    else togglePopup();
   };
 
   return (
@@ -35,7 +41,7 @@ const BasketSubMenu: React.FC = () => {
                       </div>
                       <div className='basketSubmenu__info'>
                         <span>{item_name}</span>
-                        <span>£ {price}</span>
+                        <span>£{price}</span>
                         <span>
                           Quantity: {"   "}
                           {quantity_ordered}
